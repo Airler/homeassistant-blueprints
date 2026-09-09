@@ -1,290 +1,241 @@
 blueprint:
-  name: Busch-Jaeger 6735/6736/6737 – Universal
+  name: Busch-Jaeger LightLink – Universal 1-4 Reihen
   description: >
-    Universal-Blueprint für Busch-Jaeger LightLink Schalter
-    6735 (1-fach), 6736 (2-fach) und 6737 (4-fach), angebunden
+    Universal-Blueprint für Busch-Jaeger LightLink 6735, 6736 und 6737
     über Zigbee2MQTT.
 
-    Die einzelnen Reihen sind optional.
+    Unterstützt 1 bis 4 Tastenreihen.
+    Jede Reihe kann optional auf ein einzelnes Licht oder einen Bereich (Area)
+    zeigen.
 
-    Kurzer Druck:
-      - rechte Taste: Licht EIN
-      - linke Taste: Licht AUS
-
-    Langer Druck:
-      - rechte Taste: heller
-      - linke Taste: dunkler
-
-    Beim Loslassen wird kein zusätzlicher Helligkeitsschritt
-    ausgeführt.
-
-    Als Ziel können einzelne Lichter oder ganze Bereiche (Areas)
-    ausgewählt werden.
+    Kurz rechts: Licht EIN
+    Kurz links: Licht AUS
+    Lang rechts: heller
+    Lang links: dunkler
+    Loslassen nach langem Drücken: keine weitere Aktion
 
   domain: automation
-  author: OpenAI
 
   input:
-
     device:
-      name: Busch-Jaeger Gerät
-      description: >
-        Das Busch-Jaeger 6735, 6736 oder 6737 aus Zigbee2MQTT.
+      name: Busch-Jaeger Schalter
+      description: Das über Zigbee2MQTT eingebundene Busch-Jaeger Gerät.
       selector:
         device:
           integration: mqtt
 
-    row_1:
-      name: Reihe 1 – Licht
-      description: >
-        Licht oder Bereich für Reihe 1. Leer lassen, wenn diese
-        Reihe nicht verwendet werden soll.
-      default: {}
-      selector:
-        target:
-          entity:
-            domain: light
-          area: {}
-
-    row_2:
-      name: Reihe 2 – Licht
-      description: >
-        Licht oder Bereich für Reihe 2. Leer lassen, wenn diese
-        Reihe nicht verwendet werden soll.
-      default: {}
-      selector:
-        target:
-          entity:
-            domain: light
-          area: {}
-
-    row_3:
-      name: Reihe 3 – Licht
-      description: >
-        Licht oder Bereich für Reihe 3. Leer lassen, wenn diese
-        Reihe nicht verwendet werden soll.
-      default: {}
-      selector:
-        target:
-          entity:
-            domain: light
-          area: {}
-
-    row_4:
-      name: Reihe 4 – Licht
-      description: >
-        Licht oder Bereich für Reihe 4. Leer lassen, wenn diese
-        Reihe nicht verwendet werden soll.
-      default: {}
-      selector:
-        target:
-          entity:
-            domain: light
-          area: {}
-
     dimming_step:
       name: Dimm-Schritt
-      description: >
-        Helligkeitsänderung pro brightness_step Event.
+      description: Helligkeitsänderung bei einem Dimm-Schritt.
       default: 10
       selector:
         number:
           min: 1
-          max: 25
+          max: 100
           step: 1
           unit_of_measurement: "%"
 
+    row_1:
+      name: Reihe 1
+      description: Ziel für Reihe 1. Kann ein Licht oder eine Area sein.
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
 
-mode: restart
+    row_2:
+      name: Reihe 2
+      description: Ziel für Reihe 2. Kann ein Licht oder eine Area sein.
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
 
+    row_3:
+      name: Reihe 3
+      description: Ziel für Reihe 3. Kann ein Licht oder eine Area sein.
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+
+    row_4:
+      name: Reihe 4
+      description: Ziel für Reihe 4. Kann ein Licht oder eine Area sein.
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
 
 triggers:
-
-  # ============================================================
-  # REIHE 1
-  # ============================================================
-
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: on_row_1
-    id: row1_on
+    id: row_1_on
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: off_row_1
-    id: row1_off
+    id: row_1_off
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_up_row_1
-    id: row1_up
+    id: row_1_up
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_down_row_1
-    id: row1_down
+    id: row_1_down
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_stop_row_1
-    id: row1_stop
-
-
-  # ============================================================
-  # REIHE 2
-  # ============================================================
+    id: row_1_stop
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: on_row_2
-    id: row2_on
+    id: row_2_on
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: off_row_2
-    id: row2_off
+    id: row_2_off
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_up_row_2
-    id: row2_up
+    id: row_2_up
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_down_row_2
-    id: row2_down
+    id: row_2_down
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_stop_row_2
-    id: row2_stop
-
-
-  # ============================================================
-  # REIHE 3
-  # ============================================================
+    id: row_2_stop
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: on_row_3
-    id: row3_on
+    id: row_3_on
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: off_row_3
-    id: row3_off
+    id: row_3_off
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_up_row_3
-    id: row3_up
+    id: row_3_up
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_down_row_3
-    id: row3_down
+    id: row_3_down
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_stop_row_3
-    id: row3_stop
-
-
-  # ============================================================
-  # REIHE 4
-  # ============================================================
+    id: row_3_stop
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: on_row_4
-    id: row4_on
+    id: row_4_on
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: off_row_4
-    id: row4_off
+    id: row_4_off
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_up_row_4
-    id: row4_up
+    id: row_4_up
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_step_down_row_4
-    id: row4_down
+    id: row_4_down
 
   - trigger: device
     domain: mqtt
     device_id: !input device
     type: action
     subtype: brightness_stop_row_4
-    id: row4_stop
-
+    id: row_4_stop
 
 actions:
-
   - choose:
 
-      # ========================================================
+      # ============================================================
       # REIHE 1
-      # ========================================================
+      # ============================================================
 
       - conditions:
           - condition: trigger
-            id: row1_on
+            id: row_1_on
         sequence:
           - action: light.turn_on
             target: !input row_1
 
       - conditions:
           - condition: trigger
-            id: row1_off
+            id: row_1_off
         sequence:
           - action: light.turn_off
             target: !input row_1
 
       - conditions:
           - condition: trigger
-            id: row1_up
+            id: row_1_up
         sequence:
           - action: light.turn_on
             target: !input row_1
@@ -293,35 +244,41 @@ actions:
 
       - conditions:
           - condition: trigger
-            id: row1_down
+            id: row_1_down
         sequence:
           - action: light.turn_on
             target: !input row_1
             data:
-              brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+              brightness_step_pct: >
+                {{ 0 - (dimming_step | int) }}
 
+      # Loslassen: absichtlich keine Aktion
+      - conditions:
+          - condition: trigger
+            id: row_1_stop
+        sequence: []
 
-      # ========================================================
+      # ============================================================
       # REIHE 2
-      # ========================================================
+      # ============================================================
 
       - conditions:
           - condition: trigger
-            id: row2_on
+            id: row_2_on
         sequence:
           - action: light.turn_on
             target: !input row_2
 
       - conditions:
           - condition: trigger
-            id: row2_off
+            id: row_2_off
         sequence:
           - action: light.turn_off
             target: !input row_2
 
       - conditions:
           - condition: trigger
-            id: row2_up
+            id: row_2_up
         sequence:
           - action: light.turn_on
             target: !input row_2
@@ -330,35 +287,40 @@ actions:
 
       - conditions:
           - condition: trigger
-            id: row2_down
+            id: row_2_down
         sequence:
           - action: light.turn_on
             target: !input row_2
             data:
-              brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+              brightness_step_pct: >
+                {{ 0 - (dimming_step | int) }}
 
+      - conditions:
+          - condition: trigger
+            id: row_2_stop
+        sequence: []
 
-      # ========================================================
+      # ============================================================
       # REIHE 3
-      # ========================================================
+      # ============================================================
 
       - conditions:
           - condition: trigger
-            id: row3_on
+            id: row_3_on
         sequence:
           - action: light.turn_on
             target: !input row_3
 
       - conditions:
           - condition: trigger
-            id: row3_off
+            id: row_3_off
         sequence:
           - action: light.turn_off
             target: !input row_3
 
       - conditions:
           - condition: trigger
-            id: row3_up
+            id: row_3_up
         sequence:
           - action: light.turn_on
             target: !input row_3
@@ -367,35 +329,40 @@ actions:
 
       - conditions:
           - condition: trigger
-            id: row3_down
+            id: row_3_down
         sequence:
           - action: light.turn_on
             target: !input row_3
             data:
-              brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+              brightness_step_pct: >
+                {{ 0 - (dimming_step | int) }}
 
+      - conditions:
+          - condition: trigger
+            id: row_3_stop
+        sequence: []
 
-      # ========================================================
+      # ============================================================
       # REIHE 4
-      # ========================================================
+      # ============================================================
 
       - conditions:
           - condition: trigger
-            id: row4_on
+            id: row_4_on
         sequence:
           - action: light.turn_on
             target: !input row_4
 
       - conditions:
           - condition: trigger
-            id: row4_off
+            id: row_4_off
         sequence:
           - action: light.turn_off
             target: !input row_4
 
       - conditions:
           - condition: trigger
-            id: row4_up
+            id: row_4_up
         sequence:
           - action: light.turn_on
             target: !input row_4
@@ -404,9 +371,17 @@ actions:
 
       - conditions:
           - condition: trigger
-            id: row4_down
+            id: row_4_down
         sequence:
           - action: light.turn_on
             target: !input row_4
             data:
-              brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+              brightness_step_pct: >
+                {{ 0 - (dimming_step | int) }}
+
+      - conditions:
+          - condition: trigger
+            id: row_4_stop
+        sequence: []
+
+mode: restart
