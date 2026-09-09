@@ -18,6 +18,9 @@ blueprint:
     Beim Loslassen wird kein zusätzlicher Helligkeitsschritt
     ausgeführt.
 
+    Als Ziel können einzelne Lichter oder ganze Bereiche (Areas)
+    ausgewählt werden.
+
   domain: automation
   author: OpenAI
 
@@ -34,46 +37,50 @@ blueprint:
     row_1:
       name: Reihe 1 – Licht
       description: >
-        Licht für Reihe 1. Leer lassen, wenn diese Reihe nicht
-        verwendet werden soll.
-      default: []
+        Licht oder Bereich für Reihe 1. Leer lassen, wenn diese
+        Reihe nicht verwendet werden soll.
+      default: {}
       selector:
-        entity:
-          filter:
-            - domain: light
+        target:
+          entity:
+            domain: light
+          area: {}
 
     row_2:
       name: Reihe 2 – Licht
       description: >
-        Licht für Reihe 2. Leer lassen, wenn diese Reihe nicht
-        verwendet werden soll.
-      default: []
+        Licht oder Bereich für Reihe 2. Leer lassen, wenn diese
+        Reihe nicht verwendet werden soll.
+      default: {}
       selector:
-        entity:
-          filter:
-            - domain: light
+        target:
+          entity:
+            domain: light
+          area: {}
 
     row_3:
       name: Reihe 3 – Licht
       description: >
-        Licht für Reihe 3. Leer lassen, wenn diese Reihe nicht
-        verwendet werden soll.
-      default: []
+        Licht oder Bereich für Reihe 3. Leer lassen, wenn diese
+        Reihe nicht verwendet werden soll.
+      default: {}
       selector:
-        entity:
-          filter:
-            - domain: light
+        target:
+          entity:
+            domain: light
+          area: {}
 
     row_4:
       name: Reihe 4 – Licht
       description: >
-        Licht für Reihe 4. Leer lassen, wenn diese Reihe nicht
-        verwendet werden soll.
-      default: []
+        Licht oder Bereich für Reihe 4. Leer lassen, wenn diese
+        Reihe nicht verwendet werden soll.
+      default: {}
       selector:
-        entity:
-          filter:
-            - domain: light
+        target:
+          entity:
+            domain: light
+          area: {}
 
     dimming_step:
       name: Dimm-Schritt
@@ -264,44 +271,32 @@ actions:
       - conditions:
           - condition: trigger
             id: row1_on
-          - condition: template
-            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_1
+            target: !input row_1
 
       - conditions:
           - condition: trigger
             id: row1_off
-          - condition: template
-            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target:
-              entity_id: !input row_1
+            target: !input row_1
 
       - conditions:
           - condition: trigger
             id: row1_up
-          - condition: template
-            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_1
+            target: !input row_1
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row1_down
-          - condition: template
-            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_1
+            target: !input row_1
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
 
@@ -313,44 +308,32 @@ actions:
       - conditions:
           - condition: trigger
             id: row2_on
-          - condition: template
-            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_2
+            target: !input row_2
 
       - conditions:
           - condition: trigger
             id: row2_off
-          - condition: template
-            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target:
-              entity_id: !input row_2
+            target: !input row_2
 
       - conditions:
           - condition: trigger
             id: row2_up
-          - condition: template
-            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_2
+            target: !input row_2
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row2_down
-          - condition: template
-            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_2
+            target: !input row_2
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
 
@@ -362,44 +345,32 @@ actions:
       - conditions:
           - condition: trigger
             id: row3_on
-          - condition: template
-            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_3
+            target: !input row_3
 
       - conditions:
           - condition: trigger
             id: row3_off
-          - condition: template
-            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target:
-              entity_id: !input row_3
+            target: !input row_3
 
       - conditions:
           - condition: trigger
             id: row3_up
-          - condition: template
-            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_3
+            target: !input row_3
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row3_down
-          - condition: template
-            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_3
+            target: !input row_3
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
 
@@ -411,43 +382,31 @@ actions:
       - conditions:
           - condition: trigger
             id: row4_on
-          - condition: template
-            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_4
+            target: !input row_4
 
       - conditions:
           - condition: trigger
             id: row4_off
-          - condition: template
-            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target:
-              entity_id: !input row_4
+            target: !input row_4
 
       - conditions:
           - condition: trigger
             id: row4_up
-          - condition: template
-            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_4
+            target: !input row_4
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row4_down
-          - condition: template
-            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target:
-              entity_id: !input row_4
+            target: !input row_4
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
