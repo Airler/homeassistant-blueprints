@@ -1,67 +1,84 @@
 blueprint:
-  name: Busch-Jaeger 6737 – 4-fach
+  name: Busch-Jaeger 6735/6736/6737 – Universal
   description: >
-    Steuert einen Busch-Jaeger 6737 über Zigbee2MQTT.
+    Universal-Blueprint für Busch-Jaeger LightLink Schalter
+    6735 (1-fach), 6736 (2-fach) und 6737 (4-fach), angebunden
+    über Zigbee2MQTT.
+
+    Die einzelnen Reihen sind optional.
 
     Kurzer Druck:
-    - rechte Taste: Licht EIN
-    - linke Taste: Licht AUS
+      - rechte Taste: Licht EIN
+      - linke Taste: Licht AUS
 
     Langer Druck:
-    - rechte Taste: heller
-    - linke Taste: dunkler
+      - rechte Taste: heller
+      - linke Taste: dunkler
 
-    Jeder der vier Bereiche kann einem eigenen Licht zugeordnet werden.
+    Beim Loslassen wird kein zusätzlicher Helligkeitsschritt
+    ausgeführt.
 
   domain: automation
   author: OpenAI
 
-  homeassistant:
-    min_version: "2024.10.0"
-
   input:
+
     device:
-      name: Busch-Jaeger 6737
-      description: Das über Zigbee2MQTT eingebundene Gerät.
+      name: Busch-Jaeger Gerät
+      description: >
+        Das Busch-Jaeger 6735, 6736 oder 6737 aus Zigbee2MQTT.
       selector:
         device:
           integration: mqtt
 
-    light_row_1:
-      name: Licht Reihe 1
-      description: Licht für die erste Tastenreihe.
+    row_1:
+      name: Reihe 1 – Licht
+      description: >
+        Licht für Reihe 1. Leer lassen, wenn diese Reihe nicht
+        verwendet werden soll.
+      default: []
       selector:
-        target:
-          entity:
+        entity:
+          filter:
             - domain: light
 
-    light_row_2:
-      name: Licht Reihe 2
-      description: Licht für die zweite Tastenreihe.
+    row_2:
+      name: Reihe 2 – Licht
+      description: >
+        Licht für Reihe 2. Leer lassen, wenn diese Reihe nicht
+        verwendet werden soll.
+      default: []
       selector:
-        target:
-          entity:
+        entity:
+          filter:
             - domain: light
 
-    light_row_3:
-      name: Licht Reihe 3
-      description: Licht für die dritte Tastenreihe.
+    row_3:
+      name: Reihe 3 – Licht
+      description: >
+        Licht für Reihe 3. Leer lassen, wenn diese Reihe nicht
+        verwendet werden soll.
+      default: []
       selector:
-        target:
-          entity:
+        entity:
+          filter:
             - domain: light
 
-    light_row_4:
-      name: Licht Reihe 4
-      description: Licht für die vierte Tastenreihe.
+    row_4:
+      name: Reihe 4 – Licht
+      description: >
+        Licht für Reihe 4. Leer lassen, wenn diese Reihe nicht
+        verwendet werden soll.
+      default: []
       selector:
-        target:
-          entity:
+        entity:
+          filter:
             - domain: light
 
     dimming_step:
       name: Dimm-Schritt
-      description: Helligkeitsänderung pro Dimmschritt.
+      description: >
+        Helligkeitsänderung pro brightness_step Event.
       default: 10
       selector:
         number:
@@ -247,34 +264,47 @@ actions:
       - conditions:
           - condition: trigger
             id: row1_on
+          - condition: template
+            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_1
+            target:
+              entity_id: !input row_1
 
       - conditions:
           - condition: trigger
             id: row1_off
+          - condition: template
+            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target: !input light_row_1
+            target:
+              entity_id: !input row_1
 
       - conditions:
           - condition: trigger
             id: row1_up
+          - condition: template
+            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_1
+            target:
+              entity_id: !input row_1
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row1_down
+          - condition: template
+            value_template: "{{ row_1 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_1
+            target:
+              entity_id: !input row_1
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+
 
       # ========================================================
       # REIHE 2
@@ -283,34 +313,47 @@ actions:
       - conditions:
           - condition: trigger
             id: row2_on
+          - condition: template
+            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_2
+            target:
+              entity_id: !input row_2
 
       - conditions:
           - condition: trigger
             id: row2_off
+          - condition: template
+            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target: !input light_row_2
+            target:
+              entity_id: !input row_2
 
       - conditions:
           - condition: trigger
             id: row2_up
+          - condition: template
+            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_2
+            target:
+              entity_id: !input row_2
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row2_down
+          - condition: template
+            value_template: "{{ row_2 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_2
+            target:
+              entity_id: !input row_2
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+
 
       # ========================================================
       # REIHE 3
@@ -319,34 +362,47 @@ actions:
       - conditions:
           - condition: trigger
             id: row3_on
+          - condition: template
+            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_3
+            target:
+              entity_id: !input row_3
 
       - conditions:
           - condition: trigger
             id: row3_off
+          - condition: template
+            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target: !input light_row_3
+            target:
+              entity_id: !input row_3
 
       - conditions:
           - condition: trigger
             id: row3_up
+          - condition: template
+            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_3
+            target:
+              entity_id: !input row_3
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row3_down
+          - condition: template
+            value_template: "{{ row_3 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_3
+            target:
+              entity_id: !input row_3
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
+
 
       # ========================================================
       # REIHE 4
@@ -355,31 +411,43 @@ actions:
       - conditions:
           - condition: trigger
             id: row4_on
+          - condition: template
+            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_4
+            target:
+              entity_id: !input row_4
 
       - conditions:
           - condition: trigger
             id: row4_off
+          - condition: template
+            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_off
-            target: !input light_row_4
+            target:
+              entity_id: !input row_4
 
       - conditions:
           - condition: trigger
             id: row4_up
+          - condition: template
+            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_4
+            target:
+              entity_id: !input row_4
             data:
               brightness_step_pct: !input dimming_step
 
       - conditions:
           - condition: trigger
             id: row4_down
+          - condition: template
+            value_template: "{{ row_4 | count > 0 }}"
         sequence:
           - action: light.turn_on
-            target: !input light_row_4
+            target:
+              entity_id: !input row_4
             data:
               brightness_step_pct: "{{ 0 - (dimming_step | int) }}"
