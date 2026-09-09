@@ -1,0 +1,360 @@
+alias: Busch-Jaeger 6737
+description: >
+  Steuerung eines Busch-Jaeger 6737 über Zigbee2MQTT.
+  Kurzer Druck schaltet, langer Druck dimmt und Loslassen beendet das Dimmen.
+mode: parallel
+max: 10
+
+triggers:
+
+  # ============================================================
+  # REIHE 1
+  # ============================================================
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: on_row_1
+    id: row1_on
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: off_row_1
+    id: row1_off
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_up_row_1
+    id: row1_dim_up
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_down_row_1
+    id: row1_dim_down
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_stop_row_1
+    id: row1_stop
+
+
+  # ============================================================
+  # REIHE 2
+  # ============================================================
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: on_row_2
+    id: row2_on
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: off_row_2
+    id: row2_off
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_up_row_2
+    id: row2_dim_up
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_down_row_2
+    id: row2_dim_down
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_stop_row_2
+    id: row2_stop
+
+
+  # ============================================================
+  # REIHE 3
+  # ============================================================
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: on_row_3
+    id: row3_on
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: off_row_3
+    id: row3_off
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_up_row_3
+    id: row3_dim_up
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_down_row_3
+    id: row3_dim_down
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_stop_row_3
+    id: row3_stop
+
+
+  # ============================================================
+  # REIHE 4
+  # ============================================================
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: on_row_4
+    id: row4_on
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: off_row_4
+    id: row4_off
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_up_row_4
+    id: row4_dim_up
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_step_down_row_4
+    id: row4_dim_down
+
+  - trigger: device
+    domain: mqtt
+    device_id: DEINE_DEVICE_ID
+    type: action
+    subtype: brightness_stop_row_4
+    id: row4_stop
+
+
+actions:
+
+  # ============================================================
+  # REIHE 1
+  # ============================================================
+
+  - choose:
+
+      # --- Reihe 1 EIN ---
+      - conditions:
+          - condition: trigger
+            id: row1_on
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.wohnzimmer
+
+      # --- Reihe 1 AUS ---
+      - conditions:
+          - condition: trigger
+            id: row1_off
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.wohnzimmer
+
+      # --- Reihe 1 HELLER ---
+      - conditions:
+          - condition: trigger
+            id: row1_dim_up
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.wohnzimmer
+            data:
+              brightness_step_pct: 10
+
+      # --- Reihe 1 DUNKLER ---
+      - conditions:
+          - condition: trigger
+            id: row1_dim_down
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.wohnzimmer
+            data:
+              brightness_step_pct: -10
+
+      # --- Reihe 1 STOP ---
+      - conditions:
+          - condition: trigger
+            id: row1_stop
+        sequence: []
+
+
+  # ============================================================
+  # REIHE 2
+  # ============================================================
+
+      - conditions:
+          - condition: trigger
+            id: row2_on
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.kueche
+
+      - conditions:
+          - condition: trigger
+            id: row2_off
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.kueche
+
+      - conditions:
+          - condition: trigger
+            id: row2_dim_up
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.kueche
+            data:
+              brightness_step_pct: 10
+
+      - conditions:
+          - condition: trigger
+            id: row2_dim_down
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.kueche
+            data:
+              brightness_step_pct: -10
+
+      - conditions:
+          - condition: trigger
+            id: row2_stop
+        sequence: []
+
+
+  # ============================================================
+  # REIHE 3
+  # ============================================================
+
+      - conditions:
+          - condition: trigger
+            id: row3_on
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.esszimmer
+
+      - conditions:
+          - condition: trigger
+            id: row3_off
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.esszimmer
+
+      - conditions:
+          - condition: trigger
+            id: row3_dim_up
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.esszimmer
+            data:
+              brightness_step_pct: 10
+
+      - conditions:
+          - condition: trigger
+            id: row3_dim_down
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.esszimmer
+            data:
+              brightness_step_pct: -10
+
+      - conditions:
+          - condition: trigger
+            id: row3_stop
+        sequence: []
+
+
+  # ============================================================
+  # REIHE 4
+  # ============================================================
+
+      - conditions:
+          - condition: trigger
+            id: row4_on
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.flur
+
+      - conditions:
+          - condition: trigger
+            id: row4_off
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.flur
+
+      - conditions:
+          - condition: trigger
+            id: row4_dim_up
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.flur
+            data:
+              brightness_step_pct: 10
+
+      - conditions:
+          - condition: trigger
+            id: row4_dim_down
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.flur
+            data:
+              brightness_step_pct: -10
+
+      - conditions:
+          - condition: trigger
+            id: row4_stop
+        sequence: []
